@@ -52,13 +52,14 @@ export class ChatServer {
         const user: UserModel = Object.assign({}, u);
         user.socketId = socket.id;
         this.users.push(user);
-        console.log('[server](joined): %s', user.name);
+        if(user && user.name) {
+          console.log('[server](joined): %s', user.name);
+        }
         this.io.emit('user_joined', u);
       });
       socket.on('disconnect', () => {
         const disonnectedUser: UserModel = this.users.find(o => o.socketId === socket.id);
         console.log(this.users);
-        console.log(disonnectedUser.name);
         this.io.emit('user_disconnected', disonnectedUser);
       });
     });
